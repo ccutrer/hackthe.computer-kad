@@ -1,5 +1,16 @@
-#!/usr/bin/python
+#!/usr/bin/env ruby
 
-# To solve this problem, make the './run' executable handle any 
-# appropriate command line arguments and stdin and output the
-# solution to stdout.
+top_x = ARGV[0].split('=').last.to_i
+
+numbers = STDIN.readlines
+
+blank = numbers.index("\n")
+
+requests = numbers[blank + 1..-1].map(&:to_i)
+numbers = numbers[0..blank - 1].map(&:to_i)
+
+requests.each do |request|
+  STDERR.puts ""
+  STDERR.puts numbers.map { |x| x | request }
+  puts numbers.sort_by { |x| x | request }[0...top_x]
+end
