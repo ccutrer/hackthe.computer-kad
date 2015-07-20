@@ -15,9 +15,11 @@ int comp(uint64_t l, uint64_t r)
 
 int main(int argc, char **argv)
 {
-  size_t request_size = 3;
+  std::string line = argv[1];
+  size_t request_size;
+  size_t equal = line.find('=');
+  request_size = atoi(argv[1] + equal + 1);
   std::vector<uint64_t> numbers;
-  std::string line;
   while (true)
   {
     getline(cin, line);
