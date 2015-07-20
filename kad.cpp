@@ -30,6 +30,9 @@ int main(int argc, char **argv)
 
   while (true)
   {
+    if (cin.eof()) {
+      break;
+    }
     getline(cin, line);
     cerr << line << endl;
     if(line.empty()) {
