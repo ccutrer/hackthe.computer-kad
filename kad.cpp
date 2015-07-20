@@ -29,7 +29,6 @@ int main(int argc, char **argv)
 
   while (true)
   {
-cerr << endl;
     getline(cin, line);
     if(line.empty()) {
       break;
@@ -37,7 +36,6 @@ cerr << endl;
 
     request = strtoull(line.c_str(), NULL, 10);
     std::sort(numbers.begin(), numbers.end(), comp);
-cerr << endl;
 
     for (size_t i = 0; i < request_size; ++i) {
       cout << numbers[i] << endl;
