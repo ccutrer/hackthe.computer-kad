@@ -21,7 +21,7 @@ int main(int argc, char **argv)
   while (true)
   {
     getline(cin, line);
-    cout << line << endl
+    cerr << line << endl;
     if(line.empty()) {
       break;
     }
