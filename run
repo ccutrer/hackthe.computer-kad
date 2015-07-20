@@ -11,6 +11,6 @@ numbers = numbers[0..blank - 1].map(&:to_i)
 
 requests.each do |request|
   STDERR.puts ""
-  STDERR.puts numbers.map { |x| x | request }
-  puts numbers.sort_by { |x| x | request }[0...top_x]
+  STDERR.puts numbers.map { |x| x ^ request }
+  puts numbers.sort_by { |x| x ^ request }[0...top_x]
 end
