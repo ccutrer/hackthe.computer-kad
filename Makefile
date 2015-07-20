@@ -1,6 +1,4 @@
-all:	run
-
-run:	kad.cpp
+all:
 	g++ -O3 -o run kad.cpp
 
 .PHONY: all
