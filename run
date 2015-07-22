@@ -4,7 +4,7 @@
 
 #debugger
 
-top_x = ARGV[0].split('=').last.to_i
+$top_x = ARGV[0].split('=').last.to_i
 
 file =$stdin
 #file = File.open('example1')
@@ -15,24 +15,51 @@ blank = numbers.index("\n")
 requests = numbers[blank + 1..-1].map(&:to_i)
 numbers = numbers[0..blank - 1].map(&:to_i)
 
-requests.each do |request|
-  top = []
-  #debugger
-  numbers.each do |n|
-    distance = n ^ request
-    spot = top.index { |(x, dist)| distance < dist }
-    if spot
-      top.insert(spot, [n, distance])
-      if top.length > top_x
-        top.slice!(top_x, 1)
-      end
-    elsif spot.nil? && top.length == top_x
-      next
-    else
-      top << [n, distance]
-    end
+Node = Struct.new(:left, :right, :n)
+
+root = Node.new
+
+def add_to_tree(node, key, n)
+  if key.empty?
+    node.n = n
+    return
   end
-  top.each do |(n, distance)|
-      puts n
-    end
+
+  bit = key.shift
+  if bit == '0'
+    node.left ||= Node.new
+    add_to_tree(node.left, key, n)
+  else
+    node.right ||= Node.new
+    add_to_tree(node.right, key, n)
+  end
+end
+
+numbers.each do |n|
+  add_to_tree(root, ("%064b" % n).chars, n)
+end
+
+def find_in_tree(node, key, depth = 0)
+  if depth == 64
+    $top << node.n
+    return
+  end
+
+  bit = key[depth]
+  if bit == '0'
+    find_in_tree(node.left, key, depth + 1) if node.left
+    return if $top.length == $top_x
+    find_in_tree(node.right, key, depth + 1) if node.right
+  else
+    find_in_tree(node.right, key, depth + 1) if node.right
+    return if $top.length == $top_x
+    find_in_tree(node.left, key, depth + 1) if node.left
+  end
+end
+
+requests.each do |request|
+  $top = []
+  key = ("%064b" % request)
+  find_in_tree(root, key)
+  puts $top
 end
