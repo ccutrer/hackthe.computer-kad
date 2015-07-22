@@ -35,10 +35,6 @@ def add_to_tree(node, key, n)
   end
 end
 
-numbers.each do |n|
-  add_to_tree(root, ("%064b" % n).chars, n)
-end
-
 def find_in_tree(node, key, depth = 0)
   if depth == 64
     $top << node.n
@@ -57,9 +53,37 @@ def find_in_tree(node, key, depth = 0)
   end
 end
 
-requests.each do |request|
-  $top = []
-  key = ("%064b" % request)
-  find_in_tree(root, key)
-  puts $top
+if requests.size > 50
+  numbers.each do |n|
+    add_to_tree(root, ("%064b" % n).chars, n)
+  end
+
+  requests.each do |request|
+    $top = []
+    key = ("%064b" % request)
+    find_in_tree(root, key)
+    puts $top
+  end
+else
+  requests.each do |request|
+    top = []
+    #debugger
+    numbers.each do |n|
+      distance = n ^ request
+      spot = top.index { |(x, dist)| distance < dist }
+      if spot
+        top.insert(spot, [n, distance])
+        if top.length > top_x
+          top.slice!(top_x, 1)
+        end
+      elsif spot.nil? && top.length == top_x
+        next
+      else
+        top << [n, distance]
+      end
+    end
+    top.each do |(n, distance)|
+      puts n
+    end
+  end
 end
