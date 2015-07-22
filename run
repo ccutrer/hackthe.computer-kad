@@ -73,10 +73,10 @@ else
       spot = top.index { |(x, dist)| distance < dist }
       if spot
         top.insert(spot, [n, distance])
-        if top.length > top_x
-          top.slice!(top_x, 1)
+        if top.length > $top_x
+          top.slice!($top_x, 1)
         end
-      elsif spot.nil? && top.length == top_x
+      elsif spot.nil? && top.length == $top_x
         next
       else
         top << [n, distance]
